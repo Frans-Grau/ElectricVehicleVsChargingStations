@@ -5,8 +5,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import plotly
 import plotly.express as px
-import streamlit_nested_layout
-from streamlit_option_menu import option_menu
 
 ###Load the datasets
 ev = pd.read_csv('https://raw.githubusercontent.com/Frans-Grau/ElectricVehicleVsChargingStations/main/Datasets/WA-Final.csv')
@@ -15,14 +13,13 @@ ev = pd.read_csv('https://raw.githubusercontent.com/Frans-Grau/ElectricVehicleVs
 
 ### Plots 
 #Pie1
-pxccounts = ev.groupby("Make")['Make'].count().reset_index().sort_values('Make',ascending=False)
-top_5 = pxccounts[:5]
-other = pxccounts[5:].sum()
-other["province"] = "Other"
-pxccounts = top_5.append(other, ignore_index=True)
-fig1 = px.pie(pxccounts, values="country", names="province",hole=.5,title="Largest Producing Regions")
-fig1.update_layout(paper_bgcolor = "rgba(0,0,0,0)",
-                  plot_bgcolor = "rgba(0,0,0,0)")
+evcounts = ev.groupby("Make")['Model'].count().reset_index().sort_values('Model',ascending=False)
+top_5 = evcounts[:5]
+other = evcounts[5:].sum()
+other["Make"] = "OTHER"
+evcounts = top_5.append(other, ignore_index=True)
+fig1 = px.pie(evcounts, values="Model", names="Make",hole=.5,title="Largest EV- Carmakers")
+
 
 #Pie2 
 
