@@ -20,9 +20,18 @@ with tab1:
     with col1:
         st.markdown('Column 1, page1')
     with col2:
-        st.markdown('COlumn 2, page1')
+        st.markdown('Column 2, page1')
     with col3:
         st.markdown('Column 3, page1')
+    
+    col3, col4, col5 = st.columns([2,0.5,2])
+    with col3:
+        st.markdown('Column 1-row2, page1')
+    with col4:
+        st.markdown('Column 2-row2, page1')
+    with col5:
+        st.markdown('Column 3-row2, page1')
+
 
 
 ## Inside Page2: 'Charging Stations'
@@ -34,3 +43,11 @@ with tab2:
         st.markdown('Column 2, page2')
     with col23:
         st.markdown('Column 3, page2')
+    
+    col24, col25, col26 = st.columns([2,0.5,2])
+    with col24:
+        st.markdown('Column 1-row2, page1')
+    with col25:
+        st.markdown('Column 2-row2, page1')
+    with col26:
+        st.markdown('Column 3-row2, page1')
