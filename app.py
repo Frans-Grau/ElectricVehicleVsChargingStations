@@ -18,10 +18,14 @@ top_5 = evcounts[:5]
 other = evcounts[5:].sum()
 other["Make"] = "OTHER"
 evcounts = top_5.append(other, ignore_index=True)
-fig1 = px.pie(evcounts, values="Model", names="Make",hole=.5,title="Largest EV- Carmakers")
+fig1 = px.pie(evcounts, values="Model", names="Make",hole=.5)
 
+#Bar2
+grapescore = ev.groupby('Model')['Make'].count().sort_values(ascending=False)
+fig2 = px.bar(grapescore[:10], y=grapescore.index[:10], x=grapescore.values[:10],labels=dict(x="", y=""))
+fig2.update_layout(paper_bgcolor = "rgba(0,0,0,0)",
+                  plot_bgcolor = "rgba(0,0,0,0)")
 
-#Pie2 
 
 ### Layout
 st.set_page_config(page_title = 'CleanMobility', layout='wide', menu_items=None)
@@ -32,12 +36,13 @@ with tab1:
     st.markdown('') ## empty space
     col1, col2, col3 = st.columns([2,0.5,2])
     with col1:
-        st.subheader('Column 1, page1')
+        st.subheader('Largest EV- Carmakers')
         st.plotly_chart(fig1, use_container_width=True)
     with col2:
-        st.markdown('Column 2, page1')
+        st.markdown('')
     with col3:
-        st.subheader('Column 3, page1')
+        st.subheader('Popular Models')
+        st.plotly_chart(fig2, use_container_width=True)
     
     st.title('') ## big empty space
     col3, col4, col5 = st.columns([2,0.5,2])
