@@ -26,6 +26,8 @@ grapescore = ev.groupby('Model')['Make'].count().sort_values(ascending=False)
 fig2 = px.bar(grapescore[:10], y=grapescore.index[:10], x=grapescore.values[:10],labels=dict(x="", y=""))
 fig2.update_layout(paper_bgcolor = "rgba(0,0,0,0)",
                   plot_bgcolor = "rgba(0,0,0,0)")
+#Displot3
+
 
 
 ### Layout
