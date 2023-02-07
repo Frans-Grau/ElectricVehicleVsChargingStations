@@ -11,6 +11,10 @@ ev = pd.read_csv('https://raw.githubusercontent.com/Frans-Grau/ElectricVehicleVs
 cs = pd.read_csv('https://raw.githubusercontent.com/Frans-Grau/ElectricVehicleVsChargingStations/main/Datasets/Cstations2.csv')
 
 ### Preporocessing (if needed)
+# Split the coordinates column into longitude and latitude
+ev[['longitude', 'latitude']] = ev['Vehicle Location'].str.extract(r'POINT \((-?\d+\.\d+) (-?\d+\.\d+)\)')
+# Convert longitude and latitude to numeric
+ev[['longitude', 'latitude']] = ev[['longitude', 'latitude']].astype(float)
 
 ### Plots 
 #Pie1
@@ -26,7 +30,14 @@ grapescore = ev.groupby('Model')['Make'].count().sort_values(ascending=False)
 fig2 = px.bar(grapescore[:10], y=grapescore.index[:10], x=grapescore.values[:10],labels=dict(x="", y=""))
 fig2.update_layout(paper_bgcolor = "rgba(0,0,0,0)",
                   plot_bgcolor = "rgba(0,0,0,0)")
-#Displot3
+#pie2
+df1 = ev['Electric Vehicle Type'].value_counts()
+fig3 = px.pie(ev, values=df1.values, names=df1.index,hole=.5)
+
+#Map4
+fig4 = px.scatter_mapbox(ev, lat="latitude", lon="longitude", hover_name="City",
+                        color_discrete_sequence=["fuchsia"], zoom=5, height=300)
+fig4.update_layout(mapbox_style="open-street-map", margin={"r":0,"t":0,"l":0,"b":0})
 
 
 
@@ -51,8 +62,9 @@ with tab1:
     col3, col4, col5 = st.columns([2,0.5,2])
     with col3:
         st.subheader('Column 1-row2, page1')
+        st.plotly_chart(fig3, use_container_width=True)
     with col4:
-        st.markdown('Column 2-row2, page1')
+        st.markdown('')
     with col5:
         st.subheader('Column 3-row2, page1')
 
