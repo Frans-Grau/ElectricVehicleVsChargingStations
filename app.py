@@ -64,7 +64,7 @@ with tab1:
     with col4:
         st.markdown('')
     with col5:
-        st.subheader('Where are EV located?')
+        st.subheader('Where are EVs located?')
         st.plotly_chart(fig4, use_container_width=True)
 
 
