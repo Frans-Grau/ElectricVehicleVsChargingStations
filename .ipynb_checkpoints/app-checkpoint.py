@@ -52,12 +52,17 @@ fig5.update_layout(paper_bgcolor = "rgba(0,0,0,0)",
                   plot_bgcolor = "rgba(0,0,0,0)")
 
 ##Pie6
-cscounts = cs.groupby("EV Network")['Facility Type'].count().reset_index().sort_values('Facility Type',ascending=False)
+cscounts = cs.groupby("EV Network")['State'].count().reset_index().sort_values('State',ascending=False)
 top_5 = cscounts[:4]
 other = cscounts[4:].sum().to_frame().T
 other["EV Network"] = "Other"
 cscounts = pd.concat([top_5,other], ignore_index=True)
-fig6 = px.pie(cscounts, values="Facility Type", names="EV Network",hole=.5)
+fig6 = px.pie(cscounts, values="State", names="EV Network",hole=.5)
+
+##Map7
+fig7 = px.scatter_mapbox(cs, lat="Latitude", lon="Longitude", hover_name="City",
+                        color_discrete_sequence=["blue"], zoom=3, height=300)
+fig7.update_layout(mapbox_style="open-street-map",margin={"r":0,"t":0,"l":0,"b":0})
 
 ### Layout
 st.set_page_config(page_title = 'CleanMobility', layout='wide', menu_items=None)
@@ -104,6 +109,7 @@ with tab2:
         st.plotly_chart(fig6, use_container_width=True)
     
     st.title('') ## big empty space
+    st.plotly_chart(fig7, use_container_width=True)
     col24, col25, col26 = st.columns([2,0.5,2])
     with col24:
         st.subheader('Column 1-row2, page2')
