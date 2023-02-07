@@ -8,10 +8,9 @@ import plotly.express as px
 
 ###Load the datasets
 ev = pd.read_csv('https://raw.githubusercontent.com/Frans-Grau/ElectricVehicleVsChargingStations/main/Datasets/WA-Final.csv')
+cs = pd.read_csv('https://raw.githubusercontent.com/Frans-Grau/ElectricVehicleVsChargingStations/main/Datasets/Cstations2.csv')
+
 ### Preporocessing (if needed)
-
-##
-
 
 ### Plots 
 #Pie1
