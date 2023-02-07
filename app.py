@@ -36,10 +36,8 @@ fig3 = px.pie(ev, values=df1.values, names=df1.index,hole=.5)
 
 #Map4
 fig4 = px.scatter_mapbox(ev, lat="latitude", lon="longitude", hover_name="City",
-                        color_discrete_sequence=["fuchsia"], zoom=5, height=300)
+                        color_discrete_sequence=["blue"], zoom=5, height=300)
 fig4.update_layout(mapbox_style="open-street-map", margin={"r":0,"t":0,"l":0,"b":0})
-
-
 
 ### Layout
 st.set_page_config(page_title = 'CleanMobility', layout='wide', menu_items=None)
@@ -61,12 +59,13 @@ with tab1:
     st.title('') ## big empty space
     col3, col4, col5 = st.columns([2,0.5,2])
     with col3:
-        st.subheader('Column 1-row2, page1')
+        st.subheader('EV - Types')
         st.plotly_chart(fig3, use_container_width=True)
     with col4:
         st.markdown('')
     with col5:
-        st.subheader('Column 3-row2, page1')
+        st.subheader('Where are EV located?')
+        st.plotly_chart(fig4, use_container_width=True)
 
 
 
