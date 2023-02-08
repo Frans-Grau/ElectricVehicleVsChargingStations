@@ -83,11 +83,11 @@ fig9 = px.pie(cscounts, values="State", names="State1",hole=.5)
 ##Map10 -11
 cswa= cs[cs['State']=='WA']
 fig10 = px.scatter_mapbox(cswa, lat="Latitude", lon="Longitude", hover_name="City",
-                        color_discrete_sequence=["red"], zoom=5, height=250)
+                        color_discrete_sequence=["red"], zoom=5, height=275)
 fig10.update_layout(mapbox_style="open-street-map",margin={"r":0,"t":0,"l":0,"b":0})
 
 fig11 = px.scatter_mapbox(ev, lat="latitude", lon="longitude", hover_name="City",
-                        color_discrete_sequence=["blue"], zoom=5, height=250)
+                        color_discrete_sequence=["blue"], zoom=5, height=275)
 fig11.update_layout(mapbox_style="open-street-map", margin={"r":0,"t":0,"l":0,"b":0})
 
 ### Layout
