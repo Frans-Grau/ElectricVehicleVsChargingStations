@@ -125,13 +125,13 @@ with tab2:
     st.markdown('') ## empty space
     col21, col22, col23 = st.columns([2,0.5,2])
     with col21:
-        st.subheader('Charging Stations location')
-        st.plotly_chart(fig5, use_container_width=True)
+        st.subheader('EV Network biggest players')
+        st.plotly_chart(fig6, use_container_width=True)
     with col22:
         st.markdown('')
     with col23:
-        st.subheader('EV Network biggest players')
-        st.plotly_chart(fig6, use_container_width=True)
+        st.subheader('Charging Stations location')
+        st.plotly_chart(fig5, use_container_width=True)
     
     st.title('') ## big empty space
     # st.plotly_chart(fig7, use_container_width=True)
