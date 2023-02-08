@@ -74,10 +74,25 @@ fig8 = px.bar(cs1, y=cs1['City'], x=cs1['State'], color=cs1['EV Network1'],label
 fig8.update_yaxes(title_text='Chargers')
 fig8.update_layout(legend_title_text='EV Network',paper_bgcolor = "rgba(0,0,0,0)",
                   plot_bgcolor = "rgba(0,0,0,0)")
+##Pie9
+to_keep3= ['WA']
+cs['State1'] = cs['State'].where(cs['State'].isin(to_keep3), 'U.S')
+cscounts = cs.groupby("State1")['State'].count().reset_index().sort_values('State',ascending=False)
+fig9 = px.pie(cscounts, values="State", names="State1",hole=.5)
+
+##Map10 -11
+cswa= cs[cs['State']=='WA']
+fig10 = px.scatter_mapbox(cswa, lat="Latitude", lon="Longitude", hover_name="City",
+                        color_discrete_sequence=["red"], zoom=5, height=250)
+fig10.update_layout(mapbox_style="open-street-map",margin={"r":0,"t":0,"l":0,"b":0})
+
+fig11 = px.scatter_mapbox(ev, lat="latitude", lon="longitude", hover_name="City",
+                        color_discrete_sequence=["blue"], zoom=5, height=250)
+fig11.update_layout(mapbox_style="open-street-map", margin={"r":0,"t":0,"l":0,"b":0})
 
 ### Layout
 st.set_page_config(page_title = 'CleanMobility', layout='wide', menu_items=None)
-tab1, tab2 = st.tabs(['EV - Population', 'Charging Stations'])
+tab1, tab2, tab3 = st.tabs(['EV - Population', 'Charging Stations', 'Washington Vs USA'])
 
 ## Inside Page1: 'EV-Population' 
 with tab1:
@@ -105,7 +120,6 @@ with tab1:
         st.plotly_chart(fig4, use_container_width=True)
 
 
-#
 ## Inside Page2: 'Charging Stations'
 with tab2:
     st.markdown('') ## empty space
@@ -130,3 +144,27 @@ with tab2:
     with col26:
         st.subheader('Charging stations across the U.S')
         st.plotly_chart(fig7,use_container_width=True)
+
+
+## Inside Page3: 'WA VS US'
+with tab3:
+    st.markdown('')
+    col31, col32, col33 = st.columns([2,0.5,2])
+    with col31:
+        st.subheader('Charging Stations in Washington')
+        st.plotly_chart(fig10, use_container_width=True)
+    with col32:
+        st.markdown('')
+    with col33:
+        st.subheader('EVs in Washington')
+        st.plotly_chart(fig11, use_container_width=True)
+        
+    col34, col35, col36 = st.columns([2,0.5,2])
+    with col34:
+        st.subheader('Washington Vs U.S')
+        st.plotly_chart(fig9, use_container_width=True)
+    with col35:
+        st.markdown('')
+    with col36:
+        st.subheader('Takeaway')
+        # st.plotly_chart(fig7,use_container_width=True)
