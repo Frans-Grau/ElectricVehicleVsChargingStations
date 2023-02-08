@@ -65,8 +65,12 @@ fig7 = px.scatter_mapbox(cs, lat="Latitude", lon="Longitude", hover_name="City",
 fig7.update_layout(mapbox_style="open-street-map",margin={"r":0,"t":0,"l":0,"b":0})
 
 ##Bar8
-states = cs['State'].value_counts()
-fig8 = px.bar(states, y=states.values[:7], x=states.index[:7],labels=dict(x="", y=""))
+to_keep= ['Tesla','ChargePoint','Non-Networked','SemaCharge Network']
+cs['EV Network1'] = cs['EV Network'].where(cs['EV Network'].isin(to_keep), 'Other')
+cs1 = cs.groupby(['State',"EV Network1"])['City'].count().reset_index().sort_values(by='City', ascending=False)
+top5 = ['CA','TX','NY','FL','MA','GA','WA']
+cs1 = cs1[cs1['State'].isin(top5)]
+fig8 = px.bar(cs1, y=cs1['City'], x=cs1['State'], color=cs1['EV Network1'], labels=dict(x="", y=""))
 fig8.update_layout(paper_bgcolor = "rgba(0,0,0,0)",
                   plot_bgcolor = "rgba(0,0,0,0)")
 
