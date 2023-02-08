@@ -74,11 +74,6 @@ fig8 = px.bar(cs1, y=cs1['City'], x=cs1['State'], color=cs1['EV Network1'],label
 fig8.update_yaxes(title_text='Chargers')
 fig8.update_layout(legend_title_text='EV Network',paper_bgcolor = "rgba(0,0,0,0)",
                   plot_bgcolor = "rgba(0,0,0,0)")
-##Pie9
-to_keep3= ['WA']
-cs['State1'] = cs['State'].where(cs['State'].isin(to_keep3), 'U.S')
-cscounts = cs.groupby("State1")['State'].count().reset_index().sort_values('State',ascending=False)
-fig9 = px.pie(cscounts, values="State", names="State1",hole=.5)
 
 ##Map10 -11
 cswa= cs[cs['State']=='WA']
@@ -89,6 +84,12 @@ fig10.update_layout(mapbox_style="open-street-map",margin={"r":0,"t":0,"l":0,"b"
 fig11 = px.scatter_mapbox(ev, lat="latitude", lon="longitude", hover_name="City",
                         color_discrete_sequence=["blue"], zoom=5, height=275)
 fig11.update_layout(mapbox_style="open-street-map", margin={"r":0,"t":0,"l":0,"b":0})
+
+###Pie12
+wa1 = cs[cs['State']=='WA']
+cscounts = cs.groupby("EV Network1")['City'].count().reset_index().sort_values('City',ascending=False)
+fig12 = px.pie(cscounts, values="City", names="EV Network1",hole=.5)
+
 
 ### Layout
 st.set_page_config(page_title = 'CleanMobility', layout='wide', menu_items=None)
@@ -158,13 +159,16 @@ with tab3:
     with col33:
         st.subheader('EVs in Washington')
         st.plotly_chart(fig11, use_container_width=True)
-        
-    col34, col35, col36 = st.columns([2,0.5,2])
+    
+    st.markdown('')    
+    col34, col35, col36 = st.columns([1,0.5,1])
     with col34:
-        st.subheader('Washington Vs U.S')
-        st.plotly_chart(fig9, use_container_width=True)
+        st.subheader('Washington Chargers Network')
+        st.plotly_chart(fig12,height=100,use_container_width=True)       
     with col35:
-        st.markdown('')
+        st.subheader('')
     with col36:
         st.subheader('Takeaway')
-        # st.plotly_chart(fig7,use_container_width=True)
+        st.write("3,24% of the chargers are in Washington (1843) serving up to 114042 EVs, which present to grate opportunities: ") 
+        st.write('- Deploy new charging stations across the state aiming to supply the actual charge demand and that to come. ')
+        st.write('- Network all the non-networked charging stations and face industry leaders. ')
