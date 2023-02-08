@@ -21,6 +21,8 @@ cs.loc[cs['Facility Type'] == 'FUEL_RESELLER', 'Facility Type'] = 'GAS_STATION'
 cs.loc[cs['Facility Type'] == 'GROCERY', 'Facility Type'] = 'CONVENIENCE_STORE'
 cs.loc[cs['EV Network'] == 'Tesla Destination', 'EV Network'] = 'Tesla'
 cs.loc[cs['EV Network'] == 'ChargePoint Network', 'EV Network'] = 'ChargePoint'
+to_keep= ['Tesla','ChargePoint','Non-Networked','SemaCharge Network']
+cs['EV Network1'] = cs['EV Network'].where(cs['EV Network'].isin(to_keep), 'Other')
 
 ### Plots 
 #Pie1
@@ -46,18 +48,18 @@ fig4 = px.scatter_mapbox(ev, lat="latitude", lon="longitude", hover_name="City",
 fig4.update_layout(mapbox_style="open-street-map", margin={"r":0,"t":0,"l":0,"b":0})
 
 ##Bar5
-types = cs['Facility Type'].value_counts()
-fig5 = px.bar(types, y=types.values[:7], x=types.index[:7],labels=dict(x="", y=""))
-fig5.update_layout(paper_bgcolor = "rgba(0,0,0,0)",
+cs2 = cs.groupby(['Facility Type',"EV Network1"])['City'].count().reset_index().sort_values(by='City', ascending=False)
+to_keep1 = ['CONVENIENCE_STORE','HOTEL','CAR_DEALER','GAS_STATION','MUNI_GOV','OFFICE_BLDG','FED_GOV']
+cs2 = cs2[cs2['Facility Type'].isin(to_keep1)]
+fig5 = px.bar(cs2, y=cs2['City'], x=cs2['Facility Type'], color=cs2['EV Network1'],labels=dict(x="", y=""))
+fig5.update_yaxes(title_text='Chargers')
+fig5.update_layout(legend_title_text='EV Network',paper_bgcolor = "rgba(0,0,0,0)",
                   plot_bgcolor = "rgba(0,0,0,0)")
 
 ##Pie6
-cscounts = cs.groupby("EV Network")['State'].count().reset_index().sort_values('State',ascending=False)
-top_5 = cscounts[:4]
-other = cscounts[4:].sum().to_frame().T
-other["EV Network"] = "Other"
-cscounts = pd.concat([top_5,other], ignore_index=True)
-fig6 = px.pie(cscounts, values="State", names="EV Network",hole=.5)
+cscounts = cs.groupby("EV Network1")['State'].count().reset_index().sort_values('State',ascending=False)
+fig6 = px.pie(cscounts, values="State", names="EV Network1",hole=.5)
+
 
 ##Map7
 fig7 = px.scatter_mapbox(cs, lat="Latitude", lon="Longitude", hover_name="City",
@@ -65,13 +67,12 @@ fig7 = px.scatter_mapbox(cs, lat="Latitude", lon="Longitude", hover_name="City",
 fig7.update_layout(mapbox_style="open-street-map",margin={"r":0,"t":0,"l":0,"b":0})
 
 ##Bar8
-to_keep= ['Tesla','ChargePoint','Non-Networked','SemaCharge Network']
-cs['EV Network1'] = cs['EV Network'].where(cs['EV Network'].isin(to_keep), 'Other')
 cs1 = cs.groupby(['State',"EV Network1"])['City'].count().reset_index().sort_values(by='City', ascending=False)
 top5 = ['CA','TX','NY','FL','MA','GA','WA']
-cs1 = cs1[cs1['State'].isin(top5)]
-fig8 = px.bar(cs1, y=cs1['City'], x=cs1['State'], color=cs1['EV Network1'], labels=dict(x="", y=""))
-fig8.update_layout(paper_bgcolor = "rgba(0,0,0,0)",
+cs1 = cs1[cs1['State'].isin(top5)].sort_values(by='City',ascending=False)
+fig8 = px.bar(cs1, y=cs1['City'], x=cs1['State'], color=cs1['EV Network1'],labels=dict(x="", y=""))
+fig8.update_yaxes(title_text='Chargers')
+fig8.update_layout(legend_title_text='EV Network',paper_bgcolor = "rgba(0,0,0,0)",
                   plot_bgcolor = "rgba(0,0,0,0)")
 
 ### Layout
@@ -122,10 +123,10 @@ with tab2:
     # st.plotly_chart(fig7, use_container_width=True)
     col24, col25, col26 = st.columns([2,0.5,2])
     with col24:
-        st.subheader('Column 1-row2, page2')
+        st.subheader('States holding the most charging stations')
         st.plotly_chart(fig8, use_container_width=True)
     with col25:
-        st.markdown('Column 2-row2, page2')
+        st.markdown('')
     with col26:
-        st.subheader('Column 3-row2, page2')
-        st.plotly_chart(fig7)
+        st.subheader('Charging stations across the U.S')
+        st.plotly_chart(fig7,use_container_width=True)
