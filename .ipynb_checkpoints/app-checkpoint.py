@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-import plotly
+# import plotly
 import plotly.express as px
 
 ###Load the datasets
@@ -42,7 +42,7 @@ fig3 = px.pie(ev, values=df1.values, names=df1.index,hole=.5)
 
 #Map4
 fig4 = px.scatter_mapbox(ev, lat="latitude", lon="longitude", hover_name="City",
-                        color_discrete_sequence=["blue"], zoom=5, height=300)
+                        color_discrete_sequence=["blue"], zoom=5, height=400)
 fig4.update_layout(mapbox_style="open-street-map", margin={"r":0,"t":0,"l":0,"b":0})
 
 ##Bar5
@@ -61,8 +61,14 @@ fig6 = px.pie(cscounts, values="State", names="EV Network",hole=.5)
 
 ##Map7
 fig7 = px.scatter_mapbox(cs, lat="Latitude", lon="Longitude", hover_name="City",
-                        color_discrete_sequence=["blue"], zoom=3, height=300)
+                        color_discrete_sequence=["blue"], zoom=3, height=400)
 fig7.update_layout(mapbox_style="open-street-map",margin={"r":0,"t":0,"l":0,"b":0})
+
+##Bar8
+states = cs['State'].value_counts()
+fig8 = px.bar(states, y=states.values[:7], x=states.index[:7],labels=dict(x="", y=""))
+fig8.update_layout(paper_bgcolor = "rgba(0,0,0,0)",
+                  plot_bgcolor = "rgba(0,0,0,0)")
 
 ### Layout
 st.set_page_config(page_title = 'CleanMobility', layout='wide', menu_items=None)
@@ -109,11 +115,13 @@ with tab2:
         st.plotly_chart(fig6, use_container_width=True)
     
     st.title('') ## big empty space
-    st.plotly_chart(fig7, use_container_width=True)
+    # st.plotly_chart(fig7, use_container_width=True)
     col24, col25, col26 = st.columns([2,0.5,2])
     with col24:
         st.subheader('Column 1-row2, page2')
+        st.plotly_chart(fig8, use_container_width=True)
     with col25:
         st.markdown('Column 2-row2, page2')
     with col26:
         st.subheader('Column 3-row2, page2')
+        st.plotly_chart(fig7)
